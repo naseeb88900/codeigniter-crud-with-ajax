@@ -11,11 +11,26 @@ class User extends CI_Controller {
 		$this->load->library('form_validation');
 	}
  
+	public function html_to_pdf()
+	{
+		$this->load->view('web');
+	
+		$html = $this->output->get_output();
+	   
+		$this->load->library('pdf');
+		
+		$this->dompdf->loadHtml($html);
+		
+		$this->dompdf->setPaper('A4', 'landscape');
+		
+		$this->dompdf->render();
+		
+		$this->dompdf->stream("welcome.pdf", array("Attachment"=>1));
+	}
+
 	public function index(){
 			$this->load->view('login_page');
 	}
-
-	
 
 	public function login(){
 		$email = $_POST['email'] ?? null;
@@ -24,7 +39,7 @@ class User extends CI_Controller {
 		$data = $this->users_model->login($email, $password);
  
 		if($email == NULL && $password == NULL){
-			$response['message'] = "<div class='alert alert-success'>Required Fields are empty</div>";
+			$response['message'] = "<div class='alert alert-danger'>Required Fields are empty</div>";
 			$response['status'] = -2;
 			
 			
@@ -35,12 +50,12 @@ class User extends CI_Controller {
 			
 		}
 		elseif($this->users_model->loginerrors($email, $password)){
-			$response['message'] = "<div class='alert alert-success'>Invalid Username or Password</div>";
+			$response['message'] = "<div class='alert alert-danger'>Invalid Username or Password</div>";
 			$response['status'] = 1;
 			
 		}
 		else{
-			$response['message'] = "<div class='alert alert-success'>Record Doesn't exist in database</div>";
+			$response['message'] = "<div class='alert alert-danger'>Record Doesn't exist in database</div>";
 			$response['status'] = -1;
 		}
 		echo json_encode($response);
@@ -77,18 +92,18 @@ class User extends CI_Controller {
 			if($data['user_password'] != md5($repass))
 			{
 				$response['status'] = -2;
-				$response['message'] = "<div class='alert alert-success'>Passwords Don't match</div>";
+				$response['message'] = "<div class='alert alert-danger'>Passwords Don't match</div>";
 			}
 			elseif($this->users_model->register($data))
 			{
 				$response['status'] = 1;
 				$response['message'] = "<div class='alert alert-success'>Record has been saved successfully</div>";
-				$response['msg'] = "<div class='alert alert-success'>Enter a valid email address</div>";
+				$response['msg'] = "<div class='alert alert-danger'>Enter a valid email address</div>";
 			}
 	
 			else{
 				$response['status'] = -1;
-				$response['message'] = "<div class='alert alert-success'>Email already exist in database</div>";
+				$response['message'] = "<div class='alert alert-danger'>Email already exist in database</div>";
 			}
 			
 		}

@@ -26,7 +26,7 @@
                                 <h4> <p class="dashName" ><?php echo $user_name; ?><p></h4>
                                 <p class="text-secondary mb-1">Full Stack Developer</p>
                                 <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
-                                <button class="btn btn-primary">Follow</button>
+                                <a class="btn btn-secondary " href="<?php echo base_url(); ?>user/html_to_pdf">Convert HTML to PDF</a>
                                 <button class="btn btn-outline-primary">Message</button>
                             </div>
                         </div>

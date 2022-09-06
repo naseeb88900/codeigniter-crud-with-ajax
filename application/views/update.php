@@ -20,7 +20,7 @@
 						<div class="form-group ">
 							
 							<input type="email" placeholder="Student Email" id="email" readonly="readonly" name="email" value="<?php echo $user_email; ?>" class="form-control"/>
-							<p class="alert alert-success">Can't update email</p>
+							<p class="alert alert-danger">Can't update email</p>
 						</div>
 						<div class="form-group">
 							
